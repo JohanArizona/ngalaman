@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/login_usecase.dart';
-import '../../domain/usecases/register_usecase.dart'; // Import RegisterUseCase
+import '../../domain/usecases/register_usecase.dart';
+import '../../domain/usecases/forgot_password_usecase.dart'; // Import RegisterUseCase
 
 abstract class AuthEvent extends Equatable {
   @override
@@ -37,6 +38,8 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
+class AuthPasswordResetSuccess extends AuthState {}
+
 class AuthSuccess extends AuthState {
   final String userId;
 
@@ -57,12 +60,14 @@ class AuthFailure extends AuthState {
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
-  final RegisterUseCase registerUseCase; // Tambahkan RegisterUseCase
+  final RegisterUseCase registerUseCase;
+  final ForgotPasswordUseCase forgotPasswordUseCase; // Tambahkan RegisterUseCase
 
-  AuthBloc({required this.loginUseCase, required this.registerUseCase})
+  AuthBloc({required this.forgotPasswordUseCase, required this.loginUseCase, required this.registerUseCase})
       : super(AuthInitial()) {
     on<LoginEvent>(_onLogin);
-    on<RegisterEvent>(_onRegister); // Tambahkan handler untuk RegisterEvent
+    on<RegisterEvent>(_onRegister);
+    on<ForgotPasswordEvent>(_onForgotPassword); // Tambahkan handler untuk RegisterEvent
   }
 
   void _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
@@ -92,4 +97,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthFailure(message: e.toString()));
     }
   }
+
+  void _onForgotPassword(ForgotPasswordEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await forgotPasswordUseCase.execute(event.email);
+      emit(AuthPasswordResetSuccess());
+    } catch (e) {
+      emit(AuthFailure(message: "Gagal mengirim email reset password"));
+    }
+  }
+}
+
+// Lupa Password
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+  ForgotPasswordEvent({required this.email});
 }

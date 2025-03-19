@@ -1,5 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngalaman/presentation/pages/forgot_password_page.dart';
+import 'package:ngalaman/presentation/pages/syarat_dan_ketentuan_page.dart';
 import '../blocs/auth_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -133,30 +136,74 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText:!_isPasswordVisible,
                 hasVisibilityToggle: true,
               ),
+              SizedBox(height: 10),
+              if (isLoginMode)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                      );
+                    },
+                    child: Text("Lupa Password?", style: TextStyle(color: Colors.blue)),
+                  ),
+                ),
               if (!isLoginMode)
                 SizedBox(height: 10),
               if (!isLoginMode)
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isCheckboxChecked,
-                      onChanged: (value) {
-                        setState(() {
-                          isCheckboxChecked = value!;
-                        });
-                      },
+Row(
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    Checkbox(
+      value: isCheckboxChecked,
+      onChanged: (value) {
+        setState(() {
+          isCheckboxChecked = value!;
+        });
+      },
+    ),
+    Expanded(
+      child: RichText(
+        text: TextSpan(
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.grey.shade600,
+          ),
+          children: [
+            TextSpan(text: 'Dengan melanjutkan ini, Anda menyetujui terhadap '),
+            TextSpan(
+              text: 'Syarat & Ketentuan Penggunaan dan Kebijakan Privasi',
+              style: TextStyle(
+                color: Color(0xFF9747FF), // Warna ungu yang diminta
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SyaratKetentuanPage(),
                     ),
-                    Expanded(
-                      child: Text(
-                        'Dengan melanjutkan ini, Anda menyetujui terhadap Syarat & Ketentuan Penggunaan dan Kebijakan Privasi',
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+
+                  if (result != null) {
+                    setState(() {
+                      isCheckboxChecked = result; // Update checkbox sesuai hasil dari halaman S&K
+                    });
+                  }
+                },
+            ),
+          ],
+        ),
+      ),
+    ),
+  ],
+),
+
+
               SizedBox(height: 30),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
@@ -229,34 +276,37 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
               ),
               if (isLoginMode)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Belum punya akun? ",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isLoginMode = false;
-                          _emailController.clear();
-                          _passwordController.clear();
-                        });
-                      },
-                      child: Text(
-                        "Daftar Sekarang",
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Belum punya akun? ",
                         style: GoogleFonts.poppins(
                           fontSize: 16,
-                          color: Color(int.parse('0xFF9747FF')),
-                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade700,
                         ),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isLoginMode = false;
+                            _emailController.clear();
+                            _passwordController.clear();
+                          });
+                        },
+                        child: Text(
+                          "Daftar Sekarang",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Color(int.parse('0xFF9747FF')),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ),

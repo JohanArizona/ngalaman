@@ -39,6 +39,8 @@ dependencies:
   equatable: ^2.0.7
   flutter_bloc: ^9.1.0
   google_fonts: ^6.2.1
+  flutter_screenutil: ^5.9.3
+  get: ^4.7.2
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +67,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/Vector.png
+    - lib/assets/back.png
+    - lib/assets/onboard_1.png
+    - lib/assets/onboard_2.png
+    - lib/assets/onboard_3.png
+    - lib/assets/nama_app.png
+    - lib/assets/logo_putih.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
