@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngalaman/presentation/pages/forgot_password_page.dart';
 import 'package:ngalaman/presentation/pages/syarat_dan_ketentuan_page.dart';
+import 'package:ngalaman/presentation/pages/main_page.dart';
 import '../blocs/auth_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +11,6 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _RegisterPageState createState() => _RegisterPageState();
 }
 
@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isPasswordVisible = false; 
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(height: 80),
-              Image.asset(
-                'lib/assets/Vector.png',
-                width: 100,
-                height: 100,
-              ),
+              Image.asset('lib/assets/Vector.png', width: 100, height: 100),
               SizedBox(height: 10),
               Text(
                 'Selamat Datang',
@@ -70,7 +66,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isLoginMode? Color(int.parse('0xFFD3D3D3')) : Color(int.parse('0xFF9747FF')),
+                        backgroundColor:
+                            isLoginMode ? Colors.grey : Color(0xFF9747FF),
                         foregroundColor: Colors.white,
                       ),
                       child: Text('Daftar'),
@@ -87,7 +84,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isLoginMode? Color(int.parse('0xFF9747FF')) : Color(int.parse('0xFFD3D3D3')),
+                        backgroundColor:
+                            isLoginMode ? Color(0xFF9747FF) : Colors.grey,
                         foregroundColor: Colors.white,
                       ),
                       child: Text('Masuk'),
@@ -119,7 +117,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
               SizedBox(height: 20),
-              // Input Email
               _buildTextField(
                 controller: _emailController,
                 label: 'Email atau Nomor Telepon',
@@ -128,12 +125,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 hasVisibilityToggle: false,
               ),
               SizedBox(height: 20),
-              // Input Password
               _buildTextField(
                 controller: _passwordController,
                 label: 'Kata Sandi',
                 prefixIcon: Icons.lock_outline,
-                obscureText:!_isPasswordVisible,
+                obscureText: !_isPasswordVisible,
                 hasVisibilityToggle: true,
               ),
               SizedBox(height: 10),
@@ -144,66 +140,75 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+                        MaterialPageRoute(
+                          builder: (context) => ForgotPasswordPage(),
+                        ),
                       );
                     },
-                    child: Text("Lupa Password?", style: TextStyle(color: Colors.blue)),
+                    child: Text(
+                      "Lupa Password?",
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
+              if (!isLoginMode) SizedBox(height: 10),
               if (!isLoginMode)
-                SizedBox(height: 10),
-              if (!isLoginMode)
-Row(
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    Checkbox(
-      value: isCheckboxChecked,
-      onChanged: (value) {
-        setState(() {
-          isCheckboxChecked = value!;
-        });
-      },
-    ),
-    Expanded(
-      child: RichText(
-        text: TextSpan(
-          style: GoogleFonts.poppins(
-            fontSize: 12,
-            color: Colors.grey.shade600,
-          ),
-          children: [
-            TextSpan(text: 'Dengan melanjutkan ini, Anda menyetujui terhadap '),
-            TextSpan(
-              text: 'Syarat & Ketentuan Penggunaan dan Kebijakan Privasi',
-              style: TextStyle(
-                color: Color(0xFF9747FF), // Warna ungu yang diminta
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-              ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () async {
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SyaratKetentuanPage(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      value: isCheckboxChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          isCheckboxChecked = value!;
+                        });
+                      },
                     ),
-                  );
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                          children: [
+                            TextSpan(
+                              text:
+                                  'Dengan melanjutkan ini, Anda menyetujui terhadap ',
+                            ),
+                            TextSpan(
+                              text:
+                                  'Syarat & Ketentuan Penggunaan dan Kebijakan Privasi',
+                              style: TextStyle(
+                                color: Color(0xFF9747FF),
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      final result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) =>
+                                                  SyaratKetentuanPage(),
+                                        ),
+                                      );
 
-                  if (result != null) {
-                    setState(() {
-                      isCheckboxChecked = result; // Update checkbox sesuai hasil dari halaman S&K
-                    });
-                  }
-                },
-            ),
-          ],
-        ),
-      ),
-    ),
-  ],
-),
-
-
+                                      if (result != null) {
+                                        setState(() {
+                                          isCheckboxChecked = result;
+                                        });
+                                      }
+                                    },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               SizedBox(height: 30),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
@@ -213,6 +218,11 @@ Row(
                         content: Text("Berhasil! Login atau Register berhasil"),
                         backgroundColor: Colors.green,
                       ),
+                    );
+                    // Navigasi ke MainPage setelah berhasil
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
                     );
                   } else if (state is AuthFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -226,9 +236,7 @@ Row(
                 builder: (context, state) {
                   if (state is AuthLoading) {
                     return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.blue,
-                      ),
+                      child: CircularProgressIndicator(color: Colors.blue),
                     );
                   }
                   return ElevatedButton(
@@ -237,15 +245,18 @@ Row(
                         final email = _emailController.text.trim();
                         final password = _passwordController.text.trim();
                         context.read<AuthBloc>().add(
-                              LoginEvent(email: email, password: password),
-                            );
+                          LoginEvent(email: email, password: password),
+                        );
                       } else {
                         final firstName = _firstNameController.text.trim();
                         final lastName = _lastNameController.text.trim();
                         final email = _emailController.text.trim();
                         final password = _passwordController.text.trim();
 
-                        if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
+                        if (firstName.isEmpty ||
+                            lastName.isEmpty ||
+                            email.isEmpty ||
+                            password.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Semua field harus diisi")),
                           );
@@ -253,12 +264,12 @@ Row(
                         }
 
                         context.read<AuthBloc>().add(
-                              RegisterEvent(email: email, password: password),
-                            );
+                          RegisterEvent(email: email, password: password, firstName: firstName, lastName: lastName),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(int.parse('0xFF9747FF')),
+                      backgroundColor: Color(0xFF9747FF),
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -266,7 +277,7 @@ Row(
                       ),
                     ),
                     child: Text(
-                      isLoginMode? 'Masuk' : 'Daftar',
+                      isLoginMode ? 'Masuk' : 'Daftar',
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -300,7 +311,7 @@ Row(
                           "Daftar Sekarang",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Color(int.parse('0xFF9747FF')),
+                            color: Color(0xFF9747FF),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -334,24 +345,24 @@ Row(
           labelText: label,
           labelStyle: GoogleFonts.poppins(color: Colors.grey.shade700),
           prefixIcon: Icon(prefixIcon, color: Colors.grey.shade700),
-          suffixIcon: hasVisibilityToggle
-             ? IconButton(
-                  icon: Icon(
-                    !_isPasswordVisible? Icons.visibility_off : Icons.visibility,
-                    color: Colors.grey.shade700,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible =!_isPasswordVisible;
-                    });
-                  },
-                )
-             : null,
+          suffixIcon:
+              hasVisibilityToggle
+                  ? IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.grey.shade700,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  )
+                  : null,
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 16,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         ),
         style: GoogleFonts.poppins(color: Colors.black),
         obscureText: obscureText,

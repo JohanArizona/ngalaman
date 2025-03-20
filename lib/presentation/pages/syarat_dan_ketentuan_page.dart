@@ -7,12 +7,9 @@ class SyaratKetentuanPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Image.asset(
-            'lib/assets/back.png',
-            height: 32,
-          ),
+          icon: Image.asset('lib/assets/back.png', height: 32),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
+            Navigator.pop(context);
           },
         ),
       ),
@@ -120,66 +117,72 @@ Kami dapat memperbarui kebijakan privasi ini sewaktu-waktu, dan pengguna disaran
             SizedBox(height: 30),
 
             // Tombol Tidak Setuju & Setuju
-Padding(
-  padding: EdgeInsets.only(bottom: 32), // Beri jarak dari bawah
-  child: SizedBox(
-    width: double.infinity, // Pastikan Row tetap dalam batas layar
-    child: Row(
-      mainAxisSize: MainAxisSize.min, // Agar Row tidak memaksakan lebar
-      mainAxisAlignment: MainAxisAlignment.center, // Tombol tetap di tengah
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, false); // Kirim false ke halaman Register
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              minimumSize: Size(196, 60),
-              side: BorderSide(color: Color(0xFF8B3DFF), width: 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+            Padding(
+              padding: EdgeInsets.only(bottom: 32), // Beri jarak dari bawah
+              child: SizedBox(
+                width: double.infinity, // Pastikan Row tetap dalam batas layar
+                child: Row(
+                  mainAxisSize:
+                      MainAxisSize.min, // Agar Row tidak memaksakan lebar
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Tombol tetap di tengah
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(
+                            context,
+                            false,
+                          ); // Kirim false ke halaman Register
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          minimumSize: Size(196, 60),
+                          side: BorderSide(color: Color(0xFF8B3DFF), width: 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        child: Text(
+                          "Saya Tidak Setuju",
+                          style: TextStyle(
+                            color: Color(0xFF8B3DFF),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12), // Jarak antar tombol
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(
+                            context,
+                            true,
+                          ); // Kirim true ke halaman Register
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF8B3DFF),
+                          minimumSize: Size(196, 60),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        child: Text(
+                          "Saya Setuju",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            child: Text(
-              "Saya Tidak Setuju",
-              style: TextStyle(
-                color: Color(0xFF8B3DFF),
-                fontSize: 16,
-                fontWeight: FontWeight.w900)
-            ),
-          ),
-        ),
-        SizedBox(width: 12), // Jarak antar tombol
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, true); // Kirim true ke halaman Register
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF8B3DFF),
-              minimumSize: Size(196, 60),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-            child: Text(
-              "Saya Setuju",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold)
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-),
-
-
-
-
           ],
         ),
       ),

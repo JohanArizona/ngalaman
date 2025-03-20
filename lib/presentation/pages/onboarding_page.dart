@@ -16,17 +16,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
     OnboardingContent(
       image: 'lib/assets/onboard_1.png',
       title: 'Selamat Datang di Ngalaman',
-      description: 'Platform untuk berbagi dan mencari pengalaman berharga dari orang lain.',
+      description:
+          'Platform untuk berbagi dan mencari pengalaman berharga dari orang lain.',
     ),
     OnboardingContent(
       image: 'lib/assets/onboard_2.png',
       title: 'Temukan Inspirasi',
-      description: 'Jelajahi berbagai cerita pengalaman yang menginspirasi dari berbagai bidang.',
+      description:
+          'Jelajahi berbagai cerita pengalaman yang menginspirasi dari berbagai bidang.',
     ),
     OnboardingContent(
       image: 'lib/assets/onboard_3.png',
       title: 'Bagikan Pengalamanmu',
-      description: 'Mulai berbagi pengalamanmu dan bantu orang lain untuk belajar.',
+      description:
+          'Mulai berbagi pengalamanmu dan bantu orang lain untuk belajar.',
     ),
   ];
 
@@ -61,7 +64,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 },
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 10.0,
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -107,7 +113,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   width: _currentPage == index ? 25 : 10,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: _currentPage == index ? const Color(0xFF8B3DFF) : Colors.grey.shade300,
+                    color:
+                        _currentPage == index
+                            ? const Color(0xFF8B3DFF)
+                            : Colors.grey.shade300,
                   ),
                 ),
               ),
@@ -140,7 +149,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ),
                   ),
                   child: Text(
-                    _currentPage == _contents.length - 1 ? 'Mulai' : 'Selanjutnya',
+                    _currentPage == _contents.length - 1
+                        ? 'Mulai'
+                        : 'Selanjutnya',
                     style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
