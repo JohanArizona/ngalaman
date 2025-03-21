@@ -15,9 +15,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User?> register(String email, String password, String firstName, String lastName) async {
+  Future<User?> register(
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+  ) async {
     User? user = await authDataSource.registerWithEmail(email, password);
-    
+
     if (user != null) {
       // Simpan data tambahan ke Firestore
       await firestore.collection('users').doc(user.uid).set({
@@ -47,14 +52,14 @@ class AuthRepositoryImpl implements AuthRepository {
   // Tambah Teman
   Future<void> addFriend(String uid, String friendId) async {
     await firestore.collection('users').doc(uid).update({
-      'friends': FieldValue.arrayUnion([friendId])
+      'friends': FieldValue.arrayUnion([friendId]),
     });
   }
 
   // Simpan Lokasi User
   Future<void> updateUserLocation(String uid, double lat, double lng) async {
     await firestore.collection('users').doc(uid).update({
-      'userLocation': {'latitude': lat, 'longitude': lng}
+      'userLocation': {'latitude': lat, 'longitude': lng},
     });
   }
 
@@ -62,8 +67,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> addSavedLocation(String uid, double lat, double lng) async {
     await firestore.collection('users').doc(uid).update({
       'savedLocations': FieldValue.arrayUnion([
-        {'latitude': lat, 'longitude': lng}
-      ])
+        {'latitude': lat, 'longitude': lng},
+      ]),
     });
   }
 }

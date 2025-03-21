@@ -43,20 +43,7 @@ class _MainPageState extends State<MainPage> {
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: FriendsPage(
-            friends: friends,
-            onDeleteFriend: (index) {
-              setState(() {
-                if (index >= 0 && index < friends.length) {
-                  friends.removeAt(index);
-                  print(
-                    'Friend removed at index $index. New length: ${friends.length}',
-                  );
-                }
-              });
-              Navigator.pop(bottomSheetContext);
-            },
-          ),
+          child: FriendsPage(),
         );
       },
     );
@@ -108,11 +95,11 @@ class _MainPageState extends State<MainPage> {
                 Navigator.of(dialogContext).pop();
                 try {
                   final Uri phoneUri = Uri(scheme: 'tel', path: '112');
-                  if (await canLaunchUrl(phoneUri)) {
-                    await launchUrl(phoneUri);
-                  } else {
-                    throw 'Tidak dapat membuka aplikasi telepon';
-                  }
+                  // Menggunakan LaunchMode.externalApplication untuk panggilan langsung
+                  await launchUrl(
+                    phoneUri,
+                    mode: LaunchMode.externalApplication,
+                  );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -148,10 +135,7 @@ class _MainPageState extends State<MainPage> {
             right: 16.0,
             bottom: 16.0,
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -167,27 +151,27 @@ class _MainPageState extends State<MainPage> {
               child: BottomNavigationBar(
                 items: const [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
+                    icon: Icon(Icons.home, size: 32),
+                    label: '',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.people),
-                    label: 'Friends',
+                    icon: Icon(Icons.people, size: 32),
+                    label: '',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.my_library_books_rounded),
-                    label: 'Edukasi',
+                    icon: Icon(Icons.my_library_books_rounded, size: 32),
+                    label: '',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Profile',
+                    icon: Icon(Icons.person, size: 32),
+                    label: '',
                   ),
                 ],
                 currentIndex: _selectedIndex,
                 selectedItemColor: const Color(0xFF9747FF),
                 unselectedItemColor: Colors.grey,
-                showSelectedLabels: true,
-                showUnselectedLabels: true,
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
                 type: BottomNavigationBarType.fixed,
                 onTap: (index) {
                   if (index == 1) {
@@ -228,18 +212,14 @@ class _MainPageState extends State<MainPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.phone,
-                      color: Colors.white,
-                      size: 18, // Ukuran ikon dikecilkan dari 24 ke 18
-                    ),
+                    Icon(Icons.phone, color: Colors.white, size: 18),
                     SizedBox(width: 6),
                     Text(
                       'SOS',
                       style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16, // Ukuran teks dikecilkan dari 18 ke 16
+                        fontSize: 16,
                       ),
                     ),
                   ],
@@ -266,5 +246,133 @@ class _MainPageState extends State<MainPage> {
       default:
         return HomePage(friends: friends);
     }
+  }
+}
+
+// Halaman baru untuk menambah teman
+class AddFriendPage extends StatefulWidget {
+  final Function(String) onAddFriend;
+
+  const AddFriendPage({super.key, required this.onAddFriend});
+
+  @override
+  _AddFriendPageState createState() => _AddFriendPageState();
+}
+
+class _AddFriendPageState extends State<AddFriendPage> {
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _addFriend(String email) {
+    if (email.isNotEmpty) {
+      widget.onAddFriend(email);
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Masukkan alamat email yang valid!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 80),
+              Image.asset(
+                'lib/assets/Vector.png',
+                width: 120,
+                height: 120,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.image_not_supported,
+                    size: 120,
+                    color: Colors.grey,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Tambah Teman',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Masukkan alamat email teman Anda',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.grey.withOpacity(0.8),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.email, color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(114, 42, 221, 1.0),
+                    ),
+                  ),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => _addFriend(_emailController.text),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(114, 42, 221, 1.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: const Text(
+                    'Kirim Permintaan',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -15,21 +15,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final List<OnboardingContent> _contents = [
     OnboardingContent(
       image: 'lib/assets/onboard_1.png',
-      title: 'Selamat Datang di Ngalaman',
+      title: 'Lokasi Real-Time di Ujung Jari Anda',
       description:
-          'Platform untuk berbagi dan mencari pengalaman berharga dari orang lain.',
+          'Dapatkan pembaruan lokasi real-time yang akurat dari kontak terpercaya Anda. Pastikan keselamatan dan respons cepat dalam situasi darurat dengan pelacakan akurasi tinggi.',
     ),
     OnboardingContent(
       image: 'lib/assets/onboard_2.png',
-      title: 'Temukan Inspirasi',
+      title: 'Tetap Terhubung dengan Orang Terdekat',
       description:
-          'Jelajahi berbagai cerita pengalaman yang menginspirasi dari berbagai bidang.',
+          'Lacak lokasi real-time teman dan keluarga untuk meningkatkan keamanan. Pastikan mereka tetap dalam jangkauan dan terima notifikasi saat diperlukan.',
     ),
     OnboardingContent(
       image: 'lib/assets/onboard_3.png',
-      title: 'Bagikan Pengalamanmu',
+      title: 'Kami Menghargai Privasi Anda',
       description:
-          'Mulai berbagi pengalamanmu dan bantu orang lain untuk belajar.',
+          'Akses lokasi yang fleksibel dan aman. Kendalikan siapa yang dapat melihat lokasimu dan pastikan hanya kontak terpercaya yang memiliki akses saat diperlukan.',
     ),
   ];
 

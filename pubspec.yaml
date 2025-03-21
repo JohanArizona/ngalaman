@@ -46,7 +46,12 @@ dependencies:
   cloud_firestore: ^5.6.5
   geolocator: ^13.0.3
   geocoding: ^3.0.0
-
+  flutter_map: ^8.1.1
+  latlong2: ^0.9.1
+  google_maps_flutter: ^2.11.0
+  youtube_player_flutter: ^9.1.1
+  flutter_svg: ^2.0.17
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +86,19 @@ flutter:
     - lib/assets/logo_putih.png
     - lib/assets/openmaptiles.png
     - lib/assets/Zaki.png
+    - lib/assets/vid_1.png
+    - lib/assets/vid_2.png
+    - lib/assets/vid_3.png
+    - lib/assets/vid_4.png
+    - lib/assets/vid_5.png
+    - lib/assets/vid_6.png
+    - lib/assets/vid_7.png
+    - lib/assets/vid_8.png
+    - lib/assets/vid_9.png
+    - lib/assets/vid_10.png
+    - lib/assets/vid_11.png
+    - lib/assets/home.svg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
