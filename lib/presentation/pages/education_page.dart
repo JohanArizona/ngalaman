@@ -728,6 +728,7 @@ class _EducationPageState extends State<EducationPage> {
 }
 
 // Halaman Kategori
+// Halaman Kategori
 class CategoryPage extends StatelessWidget {
   final String category;
   final List<VideoModel> videos;
@@ -738,144 +739,196 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(category),
-        backgroundColor: Colors.deepPurple,
-        elevation: 0,
-        actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {})],
-      ),
+      backgroundColor: const Color(0xFFF8F2FF), // Light purple background
       body: Stack(
         children: [
           SafeArea(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: videos.length,
-              itemBuilder: (context, index) {
-                final video = videos[index];
-                return GestureDetector(
-                  onTap: () {
-                    _navigateToVideoPlayer(context, video.videoId, video.title);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                video.thumbnail,
-                                width: 140,
-                                height: 90,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    width: 140,
-                                    height: 90,
-                                    color: Colors.grey.shade300,
-                                    child: const Center(
-                                      child: Icon(Icons.image_not_supported),
-                                    ),
-                                  );
-                                },
-                              ),
+            child: Column(
+              children: [
+                // Custom header with padding above it
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 30.0,
+                  ), // Add space above the header
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.black),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            category
+                                .toUpperCase(), // Category title in uppercase
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
-                            Positioned(
-                              bottom: 4,
-                              right: 4,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.7),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  video.duration,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Center(
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.7),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.play_arrow,
-                                    color: Colors.deepPurple,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.search, color: Colors.black),
+                        onPressed: () {
+                          // Implement search functionality if needed
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                // Video list
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: videos.length,
+                    itemBuilder: (context, index) {
+                      final video = videos[index];
+                      return GestureDetector(
+                        onTap: () {
+                          _navigateToVideoPlayer(
+                            context,
+                            video.videoId,
+                            video.title,
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                video.title,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                video.creator,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade700,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Row(
+                              // Thumbnail with play button and duration
+                              Stack(
                                 children: [
-                                  Icon(
-                                    Icons.visibility,
-                                    size: 14,
-                                    color: Colors.grey.shade700,
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.asset(
+                                      video.thumbnail,
+                                      width: 120, // Adjusted width
+                                      height:
+                                          80, // Adjusted height to match the image
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (
+                                        context,
+                                        error,
+                                        stackTrace,
+                                      ) {
+                                        return Container(
+                                          width: 120,
+                                          height: 80,
+                                          color: Colors.grey.shade300,
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.image_not_supported,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    video.views,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade700,
+                                  Positioned(
+                                    bottom: 4,
+                                    right: 4,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.7),
+                                        borderRadius: BorderRadius.circular(
+                                          20,
+                                        ), // Rounded corners
+                                      ),
+                                      child: Text(
+                                        video.duration,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned.fill(
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.play_arrow,
+                                        color: Colors.white,
+                                        size:
+                                            30, // Adjusted size for the play button
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
+                              const SizedBox(width: 12),
+                              // Video details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      video.title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      video.creator,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.visibility,
+                                          size: 14,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          video.views,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            color: Colors.grey.shade700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // More button
+                              IconButton(
+                                onPressed: () {
+                                  // Implement more options if needed
+                                },
+                                icon: const Icon(Icons.more_vert),
+                                color: Colors.grey.shade700,
+                              ),
                             ],
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_vert),
-                          color: Colors.grey.shade700,
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
+          // Bottom Navigation Bar
           Positioned(
             left: 16.0,
             right: 16.0,
@@ -929,6 +982,7 @@ class CategoryPage extends StatelessWidget {
               ),
             ),
           ),
+          // SOS Button
           Positioned(
             left: MediaQuery.of(context).size.width / 2 - 35.0,
             bottom: 70.0,
@@ -947,15 +1001,15 @@ class CategoryPage extends StatelessWidget {
                       color: Colors.black.withOpacity(0.3),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.phone, color: Colors.white, size: 18),
-                    SizedBox(width: 6),
+                    const Icon(Icons.phone, color: Colors.white, size: 18),
+                    const SizedBox(width: 6),
                     Text(
                       'SOS',
                       style: GoogleFonts.poppins(

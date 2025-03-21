@@ -115,184 +115,209 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showCrimeReportDialog(BuildContext context, LatLng tappedLocation) {
-    _tappedLocation = tappedLocation; // Store the tapped location
+    _tappedLocation = tappedLocation;
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // Memungkinkan scroll penuh
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (BuildContext bottomSheetContext) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Laporkan Kriminalitas?',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildCrimeOption(
-                        icon: Icons.motorcycle,
-                        label: 'Begel',
-                        isSelected: _selectedCrimeType == 'Begel',
-                        onTap: () {
-                          setModalState(() {
-                            _selectedCrimeType = 'Begel';
-                          });
-                        },
+            return Container(
+              padding: EdgeInsets.fromLTRB(
+                24.0,
+                24.0,
+                24.0,
+                MediaQuery.of(context).viewInsets.bottom +
+                    24.0, // Menghindari keyboard
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Laporkan Kriminalitas?',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF333333),
                       ),
-                      _buildCrimeOption(
-                        icon: Icons.person,
-                        label: 'Jambret',
-                        isSelected: _selectedCrimeType == 'Jambret',
-                        onTap: () {
-                          setModalState(() {
-                            _selectedCrimeType = 'Jambret';
-                          });
-                        },
-                      ),
-                      _buildCrimeOption(
-                        icon: Icons.pan_tool,
-                        label: 'Asuila',
-                        isSelected: _selectedCrimeType == 'Asuila',
-                        onTap: () {
-                          setModalState(() {
-                            _selectedCrimeType = 'Asuila';
-                          });
-                        },
-                      ),
-                      _buildCrimeOption(
-                        icon: Icons.more_horiz,
-                        label: 'Lain-Lain',
-                        isSelected: _selectedCrimeType == 'Lain-Lain',
-                        onTap: () {
-                          setModalState(() {
-                            _selectedCrimeType = 'Lain-Lain';
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Tingkat Bahaya',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildDangerLevelOption(
-                        icon: Icons.warning,
-                        label: 'Tinggi',
-                        color: Colors.red,
-                        isSelected: _selectedDangerLevel == 'Tinggi',
-                        onTap: () {
-                          setModalState(() {
-                            _selectedDangerLevel = 'Tinggi';
-                          });
-                        },
-                      ),
-                      _buildDangerLevelOption(
-                        icon: Icons.warning,
-                        label: 'Sedang',
-                        color: Colors.yellow,
-                        isSelected: _selectedDangerLevel == 'Sedang',
-                        onTap: () {
-                          setModalState(() {
-                            _selectedDangerLevel = 'Sedang';
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.of(bottomSheetContext).pop();
-                            setState(() {
-                              _selectedCrimeType = null;
-                              _selectedDangerLevel = null;
-                              _tappedLocation = null;
-                            });
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Colors.grey),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: const Text(
-                            'Batal',
-                            style: TextStyle(color: Colors.black),
-                          ),
+                    ),
+                    const SizedBox(height: 16), // Dikurangi dari 24
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildCrimeOption(
+                          icon: Icons.motorcycle,
+                          label: 'Begel',
+                          isSelected: _selectedCrimeType == 'Begel',
+                          onTap:
+                              () => setModalState(
+                                () => _selectedCrimeType = 'Begel',
+                              ),
                         ),
+                        _buildCrimeOption(
+                          icon: Icons.person,
+                          label: 'Jambret',
+                          isSelected: _selectedCrimeType == 'Jambret',
+                          onTap:
+                              () => setModalState(
+                                () => _selectedCrimeType = 'Jambret',
+                              ),
+                        ),
+                        _buildCrimeOption(
+                          icon: Icons.pan_tool,
+                          label: 'Asuila',
+                          isSelected: _selectedCrimeType == 'Asuila',
+                          onTap:
+                              () => setModalState(
+                                () => _selectedCrimeType = 'Asuila',
+                              ),
+                        ),
+                        _buildCrimeOption(
+                          icon: Icons.more_horiz,
+                          label: 'Lain-Lain',
+                          isSelected: _selectedCrimeType == 'Lain-Lain',
+                          onTap:
+                              () => setModalState(
+                                () => _selectedCrimeType = 'Lain-Lain',
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Tingkat Bahaya',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF333333),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (_selectedCrimeType != null &&
-                                _selectedDangerLevel != null &&
-                                _tappedLocation != null) {
-                              // Save the report to Firestore
-                              await _saveCrimeReport(
-                                _tappedLocation!,
-                                _selectedCrimeType!,
-                                _selectedDangerLevel!,
-                              );
-                              // Add the new crime location to the list
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildDangerLevelOption(
+                          icon: Icons.warning,
+                          label: 'Tinggi',
+                          color: Colors.red,
+                          isSelected: _selectedDangerLevel == 'Tinggi',
+                          onTap:
+                              () => setModalState(
+                                () => _selectedDangerLevel = 'Tinggi',
+                              ),
+                        ),
+                        const SizedBox(width: 40),
+                        _buildDangerLevelOption(
+                          icon: Icons.warning,
+                          label: 'Sedang',
+                          color: Colors.yellow,
+                          isSelected: _selectedDangerLevel == 'Sedang',
+                          onTap:
+                              () => setModalState(
+                                () => _selectedDangerLevel = 'Sedang',
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.of(bottomSheetContext).pop();
                               setState(() {
-                                crimeLocations.add({
-                                  'position': _tappedLocation!,
-                                  'crimeType': _selectedCrimeType!,
-                                  'dangerLevel': _selectedDangerLevel!,
-                                  'name': _selectedCrimeType!,
-                                });
                                 _selectedCrimeType = null;
                                 _selectedDangerLevel = null;
                                 _tappedLocation = null;
                               });
-                              Navigator.of(bottomSheetContext).pop();
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Pilih jenis kriminalitas dan tingkat bahaya!',
-                                  ),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF9747FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                            },
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.grey),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 14,
+                                horizontal: 40,
+                              ),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                          child: const Text(
-                            'Laporkan',
-                            style: TextStyle(color: Colors.white),
+                            child: const Text(
+                              'Batal',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_selectedCrimeType != null &&
+                                  _selectedDangerLevel != null &&
+                                  _tappedLocation != null) {
+                                await _saveCrimeReport(
+                                  _tappedLocation!,
+                                  _selectedCrimeType!,
+                                  _selectedDangerLevel!,
+                                );
+                                setState(() {
+                                  crimeLocations.add({
+                                    'position': _tappedLocation!,
+                                    'crimeType': _selectedCrimeType!,
+                                    'dangerLevel': _selectedDangerLevel!,
+                                    'name': _selectedCrimeType!,
+                                  });
+                                  _selectedCrimeType = null;
+                                  _selectedDangerLevel = null;
+                                  _tappedLocation = null;
+                                });
+                                Navigator.of(bottomSheetContext).pop();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Pilih jenis kriminalitas dan tingkat bahaya!',
+                                    ),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF9747FF),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 14,
+                                horizontal: 40,
+                              ),
+                            ),
+                            child: const Text(
+                              'Laporkan',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
               ),
             );
           },
@@ -383,7 +408,6 @@ class _HomePageState extends State<HomePage> {
               initialCenter: _currentLocation,
               initialZoom: 14.0,
               onTap: (tapPosition, point) {
-                // Show the crime report dialog when the map is tapped
                 _showCrimeReportDialog(context, point);
               },
             ),
@@ -398,28 +422,37 @@ class _HomePageState extends State<HomePage> {
                   // Marker untuk lokasi pengguna
                   Marker(
                     point: _currentLocation,
+                    width: 80.0,
+                    height: 80.0,
                     child: const Icon(
                       Icons.my_location,
                       color: Colors.blue,
-                      size: 30,
+                      size: 80,
                     ),
                   ),
-                  // Marker untuk teman
+                  // Marker untuk teman (dikecilkan lagi)
                   for (int i = 0; i < widget.friends.length; i++)
                     Marker(
                       point: friendLocations[i],
+                      width: 60.0, // Dikecilkan dari 80.0
+                      height: 50.0, // Dikecilkan dari 70.0
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const CircleAvatar(
-                            radius: 20,
+                            radius: 15, // Dikecilkan dari 25
                             backgroundColor: Color(0xFF9747FF),
-                            child: Icon(Icons.person, color: Colors.white),
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 20, // Dikecilkan dari 30
+                            ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 2), // Jarak lebih kecil
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
+                              horizontal: 4, // Dikecilkan dari 6
+                              vertical: 2, // Dikecilkan dari 3
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.7),
@@ -428,9 +461,10 @@ class _HomePageState extends State<HomePage> {
                             child: Text(
                               widget.friends[i]['name']!,
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 10, // Dikecilkan dari 14
                                 color: Colors.black,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -440,7 +474,10 @@ class _HomePageState extends State<HomePage> {
                   for (var crimeLocation in crimeLocations)
                     Marker(
                       point: crimeLocation['position'],
+                      width: 150.0,
+                      height: 120.0,
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.warning,
@@ -448,24 +485,25 @@ class _HomePageState extends State<HomePage> {
                                 crimeLocation['dangerLevel'] == 'Tinggi'
                                     ? Colors.red
                                     : Colors.yellow,
-                            size: 30,
+                            size: 60,
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
+                              horizontal: 8,
+                              vertical: 4,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.7),
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               crimeLocation['name'],
                               style: const TextStyle(
-                                fontSize: 12,
+                                fontSize: 20,
                                 color: Colors.black,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -495,7 +533,6 @@ class _HomePageState extends State<HomePage> {
                     child: const Center(child: CircularProgressIndicator()),
                   );
                 }
-
                 if (snapshot.hasError) {
                   return Container(
                     padding: const EdgeInsets.all(16),
@@ -509,7 +546,6 @@ class _HomePageState extends State<HomePage> {
                     child: const Text("Error fetching data"),
                   );
                 }
-
                 Map<String, dynamic> userData = snapshot.data ?? {};
                 return Container(
                   decoration: BoxDecoration(

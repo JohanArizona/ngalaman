@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:path_provider/path_provider.dart';
-import 'edit_profile_page.dart';
+import 'package:ngalaman/presentation/pages/edit_profile_page.dart';
+import 'package:ngalaman/presentation/pages/register_page.dart'; // Import RegisterPage
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Position? _currentPosition;
   String _currentAddress = "Lokasi belum diketahui";
   bool _isLoading = false;
-  String? _profilePhotoPath; // Store the local file path of the profile photo
+  String? _profilePhotoPath;
 
   @override
   void initState() {
@@ -29,10 +29,9 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_isLocationShared) {
       _getCurrentLocation();
     }
-    _loadProfilePhotoPath(); // Load the profile photo path on init
+    _loadProfilePhotoPath();
   }
 
-  // Load the profile photo path from Firestore or local storage
   Future<void> _loadProfilePhotoPath() async {
     User? user = _auth.currentUser;
     if (user != null) {
@@ -44,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (snapshot.exists) {
         var userData = snapshot.data() as Map<String, dynamic>;
         setState(() {
-          _profilePhotoPath = userData['profilePhotoPath']; // Local file path
+          _profilePhotoPath = userData['profilePhotoPath'];
         });
       }
     }
@@ -226,7 +225,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _logout() async {
     try {
       await _auth.signOut();
-      Navigator.pushReplacementNamed(context, '/login');
+      // Navigate to RegisterPage after logout
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const RegisterPage()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -296,7 +299,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             );
                             if (result == true) {
                               setState(() {});
-                              _loadProfilePhotoPath(); // Reload the photo path after editing
+                              _loadProfilePhotoPath();
                               _showFloatingNotification(context);
                             }
                           },

@@ -23,6 +23,61 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
+  // Method to show a cool success popup
+  void _showSuccessPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent dismissing by tapping outside
+      builder: (BuildContext context) {
+        // Automatically close the dialog and switch to login mode after 3 seconds
+        Future.delayed(const Duration(seconds: 3), () {
+          Navigator.of(context).pop(); // Close the dialog
+          setState(() {
+            isLoginMode = true; // Switch to login mode
+            _firstNameController.clear();
+            _lastNameController.clear();
+            _emailController.clear();
+            _passwordController.clear();
+            isCheckboxChecked = false;
+          });
+        });
+
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, color: Colors.green, size: 60),
+              const SizedBox(height: 16),
+              Text(
+                'Berhasil Mendaftar!',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF9747FF),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Akun Anda telah dibuat.\nSilakan login untuk melanjutkan.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const CircularProgressIndicator(color: Color(0xFF9747FF)),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +88,9 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 80),
+              const SizedBox(height: 80),
               Image.asset('lib/assets/Vector.png', width: 100, height: 100),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Selamat Datang',
                 textAlign: TextAlign.center,
@@ -44,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Silahkan pilih mode: Login atau Register',
                 textAlign: TextAlign.center,
@@ -53,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   color: Colors.grey.shade700,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Expanded(
@@ -67,13 +122,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            isLoginMode ? Colors.grey : Color(0xFF9747FF),
+                            isLoginMode ? Colors.grey : const Color(0xFF9747FF),
                         foregroundColor: Colors.white,
                       ),
-                      child: Text('Daftar'),
+                      child: const Text('Daftar'),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -85,15 +140,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            isLoginMode ? Color(0xFF9747FF) : Colors.grey,
+                            isLoginMode ? const Color(0xFF9747FF) : Colors.grey,
                         foregroundColor: Colors.white,
                       ),
-                      child: Text('Masuk'),
+                      child: const Text('Masuk'),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               if (!isLoginMode)
                 Row(
                   children: [
@@ -105,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hasVisibilityToggle: false,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: _buildTextField(
                         controller: _lastNameController,
@@ -116,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildTextField(
                 controller: _emailController,
                 label: 'Email atau Nomor Telepon',
@@ -124,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 keyboardType: TextInputType.text,
                 hasVisibilityToggle: false,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildTextField(
                 controller: _passwordController,
                 label: 'Kata Sandi',
@@ -132,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: !_isPasswordVisible,
                 hasVisibilityToggle: true,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               if (isLoginMode)
                 Align(
                   alignment: Alignment.centerRight,
@@ -145,13 +200,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       "Lupa Password?",
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
                 ),
-              if (!isLoginMode) SizedBox(height: 10),
+              if (!isLoginMode) const SizedBox(height: 10),
               if (!isLoginMode)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,14 +227,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: Colors.grey.shade600,
                           ),
                           children: [
-                            TextSpan(
+                            const TextSpan(
                               text:
                                   'Dengan melanjutkan ini, Anda menyetujui terhadap ',
                             ),
                             TextSpan(
                               text:
                                   'Syarat & Ketentuan Penggunaan dan Kebijakan Privasi',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFF9747FF),
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
@@ -209,21 +264,28 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Berhasil! Login atau Register berhasil"),
-                        backgroundColor: Colors.green,
-                      ),
-                    );
-                    // Navigasi ke MainPage setelah berhasil
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                    );
+                    if (isLoginMode) {
+                      // If in login mode, navigate to MainPage
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Berhasil! Login berhasil"),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainPage(),
+                        ),
+                      );
+                    } else {
+                      // If in register mode, show success popup and switch to login
+                      _showSuccessPopup(context);
+                    }
                   } else if (state is AuthFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -235,7 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
                 builder: (context, state) {
                   if (state is AuthLoading) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(color: Colors.blue),
                     );
                   }
@@ -248,6 +310,18 @@ class _RegisterPageState extends State<RegisterPage> {
                           LoginEvent(email: email, password: password),
                         );
                       } else {
+                        if (!isCheckboxChecked) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Harap setujui Syarat & Ketentuan terlebih dahulu",
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                          return;
+                        }
+
                         final firstName = _firstNameController.text.trim();
                         final lastName = _lastNameController.text.trim();
                         final email = _emailController.text.trim();
@@ -258,20 +332,27 @@ class _RegisterPageState extends State<RegisterPage> {
                             email.isEmpty ||
                             password.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Semua field harus diisi")),
+                            const SnackBar(
+                              content: Text("Semua field harus diisi"),
+                            ),
                           );
                           return;
                         }
 
                         context.read<AuthBloc>().add(
-                          RegisterEvent(email: email, password: password, firstName: firstName, lastName: lastName),
+                          RegisterEvent(
+                            email: email,
+                            password: password,
+                            firstName: firstName,
+                            lastName: lastName,
+                          ),
                         );
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF9747FF),
+                      backgroundColor: const Color(0xFF9747FF),
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -311,7 +392,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           "Daftar Sekarang",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Color(0xFF9747FF),
+                            color: const Color(0xFF9747FF),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -362,7 +443,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   )
                   : null,
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
         ),
         style: GoogleFonts.poppins(color: Colors.black),
         obscureText: obscureText,
